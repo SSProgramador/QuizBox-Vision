@@ -16,20 +16,7 @@ function Respuesta(props) {
             </div>
         );
     }
-
-    /*return (
-        <div className="row">
-            {respuestas.map((item, index) => {
-                return (
-                    <div key={index} className="column">
-                        <label>{item}</label>
-                        <input type="radio" name={index} value={item}/>
-                    </div>
-                );
-            })}
-        </div>
-    );*/
-
+    
     if (tipo === 'boolean' ){
         return (
             <div>
