@@ -1,12 +1,9 @@
 
-
 function Respuesta(props) {
     
-    const {tipo, valoresCorrectos, valoresIncorrectos, onAction} = props;
+    const {valoresCorrectos, valoresIncorrectos, onAction} = props;
    
     let respuestas = valoresIncorrectos.concat(valoresCorrectos);
-
-    if (tipo === 'multiple'){
         return (
             <div className="row">
                 <div className="col">
@@ -24,18 +21,7 @@ function Respuesta(props) {
                 </div>
 
             </div>
-
-
         );
-    }
-    
-    if (tipo === 'boolean' ){
-        return (
-            <div>
-                Boolean
-            </div>
-        );
-    }
 
 }
 

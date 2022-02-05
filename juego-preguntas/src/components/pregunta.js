@@ -7,7 +7,7 @@ let preguntas = [
         "category": "Science & Nature",
         "type": "multiple",
         "difficulty": "hard",
-        "question": "The &#039;Islets of Langerhans&#039; is found in which human organ?",
+        "question": "The Islets of Langerhans is found in which human organ?",
         "correct_answer": "Pancreas",
         "incorrect_answers": [
             "Kidney",
@@ -142,56 +142,78 @@ function Pregunta(){
                 $("#rptaCorrecta").removeClass('visible'); 
                 setNumeroPregunta(preguntaNumero + 1 );     
 
-            }, 1500);
-            setPuntaje(puntaje + 10);
+            }, 1000);
+            sumarPuntaje(preguntas[preguntaNumero].type);
         }else{
             $("#rptaInCorrecta").addClass('visible');
             setTimeout(() => {
                 $("#rptaInCorrecta").removeClass('visible'); 
                 setNumeroPregunta(preguntaNumero + 1 );     
 
-            }, 1500);
-        }
-        
+            }, 1000);
+        }       
     }    
 
-    
-    return (
-        <div>
-            <div className="row">
-                <div className="col"><b> Pregunto Nro {preguntaNumero + 1} / {preguntas.length}</b></div>
-            </div>
+    const sumarPuntaje = (tipoPregunta) => {
+        if (tipoPregunta === 'multiple'){
+            setPuntaje(puntaje + 10);
+        }else{
+            setPuntaje(puntaje + 5);
+        }
+    }
+  
 
-            <div className="row">
-                <div className="col">
-                    <div className="alert alert-info" role="alert">
-                        {preguntas[preguntaNumero].question}
+    if (preguntaNumero < preguntas.length){
+        return (
+        
+            <div>
+                <div className="row">
+                    <div className="col"><b> Pregunto Nro {preguntaNumero + 1} / {preguntas.length}</b></div>
+                </div>
+    
+                <div className="row">
+                    <div className="col">
+                        <div className="alert alert-info" role="alert">
+                            {preguntas[preguntaNumero].question}
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div className="row">
-                <div className="col">
-                    <Respuesta tipo={preguntas[preguntaNumero].type} valoresCorrectos={preguntas[preguntaNumero].correct_answer} valoresIncorrectos={preguntas[preguntaNumero].incorrect_answers} onAction={handleAction}></Respuesta>    
-                </div>            
-            </div>        
-            
-            <div className="alert alert-success hidden " id="rptaCorrecta" role="alert">
-                Respuesta Correcta!!
-            </div>
-
-            <div className="alert alert-danger hidden " id="rptaInCorrecta" role="alert">
-                Respuesta Incorrecta :(
-            </div>
-
-            <div className="row">
-                <div className="col">
-                    <button type="button" className="btn btn-success" onClick={confirmarRespuesta}>Confirmar Respuesta</button>
+    
+                <div className="row">
+                    <div className="col">
+                        <Respuesta valoresCorrectos={preguntas[preguntaNumero].correct_answer} valoresIncorrectos={preguntas[preguntaNumero].incorrect_answers} onAction={handleAction}></Respuesta>    
+                    </div>            
+                </div>        
+                
+                <div className="alert alert-success hidden " id="rptaCorrecta" role="alert">
+                    Respuesta Correcta!!
                 </div>
-            </div>                
-            
-        </div>
-    )
+    
+                <div className="alert alert-danger hidden " id="rptaInCorrecta" role="alert">
+                    Respuesta Incorrecta :(
+                </div>
+    
+                <div className="row">
+                    <div className="col">
+                        <button type="button" className="btn btn-success" onClick={confirmarRespuesta}>Confirmar Respuesta</button>
+                    </div>
+                </div>                
+                
+            </div>
+        )
+    }else{
+        return (
+            <div>
+                <span><b>Fin del juego</b></span>
+
+                <div className="alert alert-warning" id="rptaCorrecta" role="alert">
+                    <span>Puntaje Acumlado: {puntaje}</span>
+                </div>   
+            </div>
+         
+        )
+    }
+
 }
 
 export default Pregunta;
