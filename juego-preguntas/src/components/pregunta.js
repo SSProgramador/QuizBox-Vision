@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import Respuesta from './Respuesta';
-let pregunta = [
+import 'bootstrap/dist/css/bootstrap.min.css';
+import $ from 'jquery/dist/jquery.slim';
+let preguntas = [
     {
         "category": "Science & Nature",
         "type": "multiple",
@@ -116,12 +119,79 @@ let pregunta = [
     }
 ];
 
+
 function Pregunta(){
+    const [opcionConfirmada, setOpcionConfirmada] = useState("");
+    const [puntaje, setPuntaje] = useState(0);
+    const [preguntaNumero, setNumeroPregunta] = useState(0);
+
+    function handleAction(e) {
+        console.log('Child did:', e.target.value);
+        setOpcionConfirmada(e.target.value);
+    }
+
+    const confirmarRespuesta = () => {
+        console.log('opcionConfirmada', opcionConfirmada);
+        verificarRespuesta(opcionConfirmada)
+    }
+
+    const verificarRespuesta =  (opcionElegida) => {
+        if (preguntas[preguntaNumero].correct_answer === opcionElegida){
+            $("#rptaCorrecta").addClass('visible');
+            setTimeout(() => {
+                $("#rptaCorrecta").removeClass('visible'); 
+                setNumeroPregunta(preguntaNumero + 1 );     
+
+            }, 1500);
+            setPuntaje(puntaje + 10);
+        }else{
+            $("#rptaInCorrecta").addClass('visible');
+            setTimeout(() => {
+                $("#rptaInCorrecta").removeClass('visible'); 
+                setNumeroPregunta(preguntaNumero + 1 );     
+
+            }, 1500);
+        }
+        
+    }    
+
+    
     return (
         <div>
-            <span> {pregunta[0].question} </span>
-            <Respuesta tipo={pregunta[0].type} valoresCorrectos={pregunta[0].correct_answer} valoresIncorrectos={pregunta[0].incorrect_answers}></Respuesta>
+            <div className="row">
+                <div className="col"><b> Pregunto Nro {preguntaNumero + 1} / {preguntas.length}</b></div>
+            </div>
+
+            <div className="row">
+                <div className="col">
+                    <div className="alert alert-info" role="alert">
+                        {preguntas[preguntaNumero].question}
+                    </div>
+                </div>
+            </div>
+
+            <div className="row">
+                <div className="col">
+                    <Respuesta tipo={preguntas[preguntaNumero].type} valoresCorrectos={preguntas[preguntaNumero].correct_answer} valoresIncorrectos={preguntas[preguntaNumero].incorrect_answers} onAction={handleAction}></Respuesta>    
+                </div>            
+            </div>        
+            
+            <div className="alert alert-success hidden " id="rptaCorrecta" role="alert">
+                Respuesta Correcta!!
+            </div>
+
+            <div className="alert alert-danger hidden " id="rptaInCorrecta" role="alert">
+                Respuesta Incorrecta :(
+            </div>
+
+            <div className="row">
+                <div className="col">
+                    <button type="button" className="btn btn-success" onClick={confirmarRespuesta}>Confirmar Respuesta</button>
+                </div>
+            </div>                
+            
         </div>
     )
 }
+
 export default Pregunta;
